@@ -1,157 +1,69 @@
 #include <stdio.h>
 #include <string.h>
 
-char A[20] = "Juice", B[20] = "Cola", C[20] = "Tea", D[20] = "Water", E[20] = "Coffee";
-char new_A[20], new_B[20], new_C[20], new_D[20], new_E[20];
+// variable for product information
+char name[5][20] = {"Juice", "Cola", "Tea", "Water", "Coffee"};
 int amount[5] = {5, 1, 2, 1, 9};
-char abutton = ' ', bbutton = ' ', cbutton = ' ', dbutton = ' ', ebutton = ' ';
-char outputdrink = '=';
+char button[5][5] = {" ", " ", " ", " ", " "};
+int price[5] = {10, 9, 5, 8, 7};
+
+char outputdrink[] = "=";
 int coin_choice, initialmoney = 0, revenue = 0, coin[4] = {1, 2, 5, 10};
-int Aprice = 10, Bprice = 6, Cprice = 5, Dprice = 8, Eprice = 7;
+
 int menuchoice;
 int service;
 
 // variable for menuchoice 9
 int password;
-int access_code1 = 1110;
-int access_code2 = 001110;
+int access_code[2] = {1110, 001110};
 
 void button_update(void)
 {
-	if (initialmoney < Aprice)
+	int i;
+	for (i = 0; i < 5; i++)
 	{
-		abutton = ' ';
-	}
-	if (initialmoney < Bprice)
-	{
-		bbutton = ' ';
-	}
-	if (initialmoney < Cprice)
-	{
-		cbutton = ' ';
-	}
-	if (initialmoney < Dprice)
-	{
-		dbutton = ' ';
-	}
-	if (initialmoney < Eprice)
-	{
-		ebutton = ' ';
-	}
+		if (amount[i] == 0)
+		{
+			strcpy(button[i], "X");
+			continue;
+		}
 
-	if (initialmoney >= Aprice)
-	{
-		abutton = 'O';
-	}
-	if (initialmoney >= Bprice)
-	{
-		bbutton = 'O';
-	}
-	if (initialmoney >= Cprice)
-	{
-		cbutton = 'O';
-	}
-	if (initialmoney >= Dprice)
-	{
-		dbutton = 'O';
-	}
-	if (initialmoney >= Eprice)
-	{
-		ebutton = 'O';
-	}
-
-	if (amount[0] == 0)
-	{
-		abutton = 'X';
-	}
-	if (amount[1] == 0)
-	{
-		bbutton = 'X';
-	}
-	if (amount[2] == 0)
-	{
-		cbutton = 'X';
-	}
-	if (amount[3] == 0)
-	{
-		dbutton = 'X';
-	}
-	if (amount[4] == 0)
-	{
-		ebutton = 'X';
+		if (initialmoney < price[i])
+			strcpy(button[i], " ");
+		else if (initialmoney >= price[i])
+			strcpy(button[i], "O");
 	}
 }
 
-int machine(void)
+void machine(void)
 {
+	int i;
 	printf("*---------------------------*\n");
 	printf("|      Vending Machine      |\n");
 	printf("*---------------------------*\n");
 	printf("|   A    B    C    D    E   |\n");
 	printf("|  ");
 
-	if (Aprice >= 10)
-		printf("$%d  ", Aprice);
-	else
-		printf("$ %d  ", Aprice);
-
-	if (Bprice >= 10)
-		printf("$%d  ", Bprice);
-	else
-		printf("$ %d  ", Bprice);
-
-	if (Cprice >= 10)
-		printf("$%d  ", Cprice);
-	else
-		printf("$ %d  ", Cprice);
-
-	if (Dprice >= 10)
-		printf("$%d  ", Dprice);
-	else
-		printf("$ %d  ", Dprice);
-
-	if (Eprice >= 10)
-		printf("$%d ", Eprice);
-	else
-		printf("$ %d ", Eprice);
-
-	if (Aprice >= 10 || Bprice >= 10 || Cprice >= 10 || Dprice >= 10 || Eprice >= 10)
+	for (i = 0; i < 5; i++)
 	{
-		printf(" |\n");
+		if (price[i] >= 10)
+			printf("$%d  ", price[i]);
+		else
+			printf("$ %d  ", price[i]);
 	}
-	else if (Aprice < 10 && Bprice < 10 && Cprice < 10 && Dprice < 10 && Eprice < 10)
-	{
-		printf(" |\n");
-	}
+	printf("|\n");
 
-	else if (
-		(Aprice >= 10 && Bprice >= 10) || (Aprice >= 10 && Cprice >= 10) ||
-		(Aprice >= 10 && Dprice >= 10) || (Aprice >= 10 && Eprice >= 10) ||
-		(Bprice >= 10 && Cprice >= 10) || (Bprice >= 10 && Dprice >= 10) ||
-		(Bprice >= 10 && Eprice >= 10) || (Cprice >= 10 && Dprice >= 10) ||
-		(Cprice >= 10 && Eprice >= 10) || (Dprice >= 10 && Eprice >= 10))
-	{
-		printf("|\n");
-	}
-
-	printf(
-		"|  [%c]  [%c]  [%c]  [%c]  [%c]  |\n", abutton, bbutton, cbutton, dbutton, ebutton);
+	printf("|  [%s]  [%s]  [%s]  [%s]  [%s]  |\n", button[0], button[1], button[2], button[3], button[4]);
 	printf("*---------------------------*\n");
 
 	if (initialmoney < 10)
-	{
 		printf("|                    [$ %d]  |\n", initialmoney);
-	}
-
 	else
-	{
 		printf("|                    [$%d]  |\n", initialmoney);
-	}
 
 	printf("|                           |\n");
-	printf("|           [=%c=]           |\n", outputdrink);
+	printf("|           [=%s=]           |\n", outputdrink);
 	printf("*---------------------------*\n");
-	return 0;
 }
 
 void menu(void)
@@ -175,162 +87,71 @@ void coin_menu(void)
 	printf("0. Go back\n");
 }
 
-int countmoney(int coin_choice)
+void countmoney(int coin_choice)
 {
+	int i;
 	if (coin_choice > 4)
 	{
 		printf("Invalid choice!\n");
 		printf("\n");
 	}
+	else if (coin_choice == 0)
+	{
+		printf("Going back!\n\n");
+	}
 	else
 	{
-		if (coin_choice == 1)
+		for (i = 1; i < 5; i++)
 		{
-			initialmoney = initialmoney + coin[0];
-			printf("You have inserted $1.\n");
-			printf("\n");
+			if (coin_choice == i)
+			{
+				initialmoney += coin[i - 1];
+				printf("You have inserted $%d.\n\n", coin[i - 1]);
+			}
 		}
-		else if (coin_choice == 2)
-		{
-			initialmoney = initialmoney + coin[1];
-			printf("You have inserted $2.\n");
-			printf("\n");
-		}
-		else if (coin_choice == 3)
-		{
-			initialmoney = initialmoney + coin[2];
-			printf("You have inserted $5.\n");
-			printf("\n");
-		}
-		else if (coin_choice == 4)
-		{
-			initialmoney = initialmoney + coin[3];
-			printf("You have inserted $10.\n");
-			printf("\n");
-		}
-		else if (coin_choice == 0)
-		{
-			printf("Going back!\n");
-			printf("\n");
-		}
+
 		if (coin_choice > 0 && coin_choice < 5)
 		{
 			button_update();
 			machine();
 			printf("\n");
 		}
-		return 0;
 	}
 }
 
-int product_chosen(int productchoice)
+void product_chosen(int productchoice)
 {
-	if (productchoice == 1)
+	int i;
+	char letter[5][5] = {"A", "B", "C", "D", "E"};
+	for (i = 1; i <= 5; i++)
 	{
-		printf("You have pressed button A.\n");
-		if (initialmoney >= Aprice)
+		if (productchoice == i)
 		{
-			initialmoney = initialmoney - Aprice;
-			revenue += Aprice;
-			amount[0]--;
-			outputdrink = 'A';
-			printf("\n");
-			button_update();
-		}
-		else
-		{
-			outputdrink = '=';
-			printf("\n");
+			printf("You have pressed button %s.\n", letter[i - 1]);
+			if (initialmoney >= price[i - 1])
+			{
+				initialmoney = initialmoney - price[i - 1];
+				revenue += price[i - 1];
+				amount[i - 1]--;
+				strcpy(outputdrink, letter[i - 1]);
+				printf("\n");
+				button_update();
+			}
+			else
+			{
+				strcpy(outputdrink, "=");
+				printf("\n");
+			}
 		}
 	}
-
-	if (productchoice == 2)
-	{
-		printf("You have pressed button B.\n");
-		if (initialmoney >= Bprice)
-		{
-			initialmoney = initialmoney - Bprice;
-			revenue += Bprice;
-			amount[1]--;
-			outputdrink = 'B';
-			printf("\n");
-			button_update();
-		}
-		else
-		{
-			outputdrink = '=';
-			printf("\n");
-		}
-	}
-
-	if (productchoice == 3)
-	{
-		printf("You have pressed button C.\n");
-		if (initialmoney >= Cprice)
-		{
-			initialmoney = initialmoney - Cprice;
-			revenue += Cprice;
-			amount[2]--;
-			outputdrink = 'C';
-			printf("\n");
-			button_update();
-		}
-		else
-		{
-			outputdrink = '=';
-			printf("\n");
-		}
-	}
-
-	if (productchoice == 4)
-	{
-		printf("You have pressed button D.\n");
-		if (initialmoney > Dprice)
-		{
-			initialmoney = initialmoney - Dprice;
-			revenue += Dprice;
-			amount[3]--;
-			outputdrink = 'D';
-			printf("\n");
-			button_update();
-		}
-		else
-		{
-			outputdrink = '=';
-			printf("\n");
-		}
-	}
-
-	if (productchoice == 5)
-	{
-		printf("You have pressed button E.\n");
-		if (initialmoney >= Eprice)
-		{
-			initialmoney = initialmoney - Eprice;
-			revenue += Eprice;
-			amount[4]--;
-			outputdrink = 'E';
-			printf("\n");
-			button_update();
-		}
-		else
-		{
-			outputdrink = '=';
-			printf("\n");
-		}
-	}
-	return 0;
 }
 
-int product_information(void)
+void product_information(void)
 {
+	char letter[5][5] = {"A", "B", "C", "D", "E"};
 	printf("(1) The displayed products are:\n");
-	printf("A. %s ($%d)\n", A, Aprice);
-	printf("B. %s ($%d)\n", B, Bprice);
-	printf("C. %s ($%d)\n", C, Cprice);
-	printf("D. %s ($%d)\n", D, Dprice);
-	printf("E. %s ($%d)\n", E, Eprice);
-	return 0;
+	for (int i = 0; i < 5; i++)
+		printf("%s. %s ($%d)\n", letter[i], name[i], price[i]);
 }
 
 void service_menu(void)
@@ -344,174 +165,71 @@ void service_menu(void)
 	printf("Your choice:");
 }
 
-int machine_state(void)
+void machine_state(void)
 {
+	char letter[5][5] = {"A", "B", "C", "D", "E"};
+	int i;
+
 	printf("(9-1) Machine status \n");
 	printf("Amount of revenue: $%d\n", revenue);
 	printf("Amount of inserted coins: $%d\n", initialmoney);
 	printf("Product information:\n");
 
-	if (amount[0] == 0)
+	for (i = 0; i < 5; i++)
 	{
-		printf("A. %s ($%d) (sold out)\n", A, Aprice);
-	}
-	else
-	{
-		printf("A. %s ($%d) (%d left)\n", A, Aprice, amount[0]);
-	}
-
-	if (amount[1] == 0)
-	{
-		printf("B. %s ($%d) (sold out)\n", B, Bprice);
-	}
-	else
-	{
-		printf("B. %s ($%d) (%d left)\n", B, Bprice, amount[1]);
-	}
-
-	if (amount[2] == 0)
-	{
-		printf("C. %s ($%d) (sold out)\n", C, Cprice);
-	}
-	else
-	{
-		printf("C. %s ($%d) (%d left)\n", C, Cprice, amount[2]);
-	}
-
-	if (amount[3] == 0)
-	{
-		printf("D. %s ($%d) (sold out)\n", D, Dprice);
-	}
-	else
-	{
-		printf("D. %s ($%d) (%d left)\n", D, Dprice, amount[3]);
-	}
-
-	if (amount[4] == 0)
-	{
-		printf("E. %s ($%d) (sold out)\n", E, Eprice);
-	}
-	else
-	{
-		printf("E. %s ($%d) (%d left)\n", E, Eprice, amount[4]);
+		if (amount[i] == 0)
+			printf("%s. %s ($%d) (sold out)\n", letter[i], name[i], price[i]);
+		else
+			printf("%s. %s ($%d) (%d left)\n", letter[i], name[i], price[i], amount[i]);
 	}
 
 	printf("\n");
-	return 0;
 }
 
-int product_refill_table(int product_refill)
+void product_refill_table(int product_refill)
 {
-	if (product_refill == 1)
+	char letter[5][5] = {"A", "B", "C", "D", "E"};
+	int i;
+	for (i = 0; i <= 5; i++)
 	{
-		amount[0] = 10;
-		printf("You have refilled product A to full.\n");
-		printf("\n");
+		if (product_refill == 0 && i == 0)
+		{
+			printf("Going back!\n");
+			printf("\n");
+			break;
+		}
+		else
+		{
+			if (product_refill == i)
+			{
+				amount[i - 1] = 10;
+				printf("You have refilled product %s to full.\n", letter[i - 1]);
+				printf("\n");
+				break;
+			}
+		}
 	}
-
-	if (product_refill == 2)
-	{
-		amount[1] = 10;
-		printf("You have refilled product B to full.\n");
-		printf("\n");
-	}
-
-	if (product_refill == 3)
-	{
-		amount[2] = 10;
-		printf("You have refilled product C to full.\n");
-		printf("\n");
-	}
-
-	if (product_refill == 4)
-	{
-		amount[3] = 10;
-		printf("You have refilled product D to full.\n");
-		printf("\n");
-	}
-
-	if (product_refill == 5)
-	{
-		amount[4] = 10;
-		printf("You have refilled product E to full.\n");
-		printf("\n");
-	}
-
-	if (product_refill == 0)
-	{
-		printf("Going back!\n");
-		printf("\n");
-	}
-	return 0;
 }
 
-int product_change_table(int product_change)
+void product_change_table(int product_change)
 {
-	if (product_change == 1)
+	char letter[5][5] = {"A", "B", "C", "D", "E"};
+	int i;
+	for (i = 1; i <= 5; i++)
 	{
-		printf("You are changing product A.\n\n");
-		printf("Enter new product name:");
-		scanf("%s", new_A);
-		strcpy(A, new_A);
-		printf("Enter new product price:");
-		scanf("%d", &Aprice);
-		printf("The new product A has been filled to full.\n");
-		printf("\n");
-		amount[0] = 10;
+		if (product_change == i)
+		{
+			printf("You are changing product %s.\n\n", letter[i - 1]);
+			printf("Enter new product name:");
+			scanf("%s", name[i - 1]);
+			printf("Enter new product price:");
+			scanf("%d", &price[i - 1]);
+			printf("The new product %s has been filled to full.\n", letter[i - 1]);
+			printf("\n");
+			amount[i - 1] = 10;
+			break;
+		}
 	}
-
-	if (product_change == 2)
-	{
-		printf("You are changing product B.\n\n");
-		printf("Enter new product name:");
-		scanf("%s", new_B);
-		strcpy(B, new_B);
-		printf("Enter new product price:");
-		scanf("%d", &Bprice);
-		printf("The new product B has been filled to full.\n");
-		printf("\n");
-		amount[1] = 10;
-	}
-
-	if (product_change == 3)
-	{
-		printf("You are changing product C.\n\n");
-		printf("Enter new product name:");
-		scanf("%s", new_C);
-		strcpy(C, new_C);
-		printf("Enter new product price:");
-		scanf("%d", &Cprice);
-		printf("The new product C has been filled to full.\n");
-		printf("\n");
-		amount[2] = 10;
-	}
-
-	if (product_change == 4)
-	{
-		printf("You are changing product D.\n\n");
-		printf("Enter new product name:");
-		scanf("%s", new_D);
-		strcpy(D, new_D);
-		printf("Enter new product price:");
-		scanf("%d", &Dprice);
-		printf("The new product D has been filled to full.\n");
-		printf("\n");
-		amount[3] = 10;
-	}
-
-	if (product_change == 5)
-	{
-		printf("You are changing product E.\n\n");
-		printf("Enter new product name:");
-		scanf("%s", new_E);
-		strcpy(E, new_E);
-		printf("Enter new product price:");
-		scanf("%d", &Eprice);
-		printf("The new product E has been filled to full.\n");
-		printf("\n");
-		amount[4] = 10;
-	}
-	return 0;
 }
 
 int main(void)
@@ -520,7 +238,7 @@ int main(void)
 	{
 		button_update();
 		machine();
-		outputdrink = '=';
+		strcpy(outputdrink, "=");
 		printf("\n");
 		menu();
 		printf("\nYour choice:");
@@ -578,14 +296,15 @@ int main(void)
 			printf("(4) Return button is pressed.\n");
 			printf("$%d has been returned.\n\n", initialmoney);
 			initialmoney = 0;
-			abutton = bbutton = cbutton = dbutton = ebutton = ' ';
+			for (int i = 0; i < 5; i++)
+				strcpy(button[i], " ");
 		}
 		else if (menuchoice == 9)
 		{
 			printf("(9) Opening service menu. Access code is required.\nEnter access code:");
 			scanf("%d", &password);
 
-			if (access_code1 != password && access_code2 != password)
+			if (access_code[0] != password && access_code[1] != password)
 				printf("Incorrect code!\n\n");
 			else
 			{
@@ -612,7 +331,8 @@ int main(void)
 						printf("$%d is withdrawn.\n", (initialmoney + revenue));
 						initialmoney = 0;
 						revenue = 0;
-						abutton = bbutton = cbutton = dbutton = ebutton = ' ';
+						for (int i = 0; i < 5; i++)
+							strcpy(button[i], " ");
 						printf("\n");
 					}
 					else if (service == 3)
